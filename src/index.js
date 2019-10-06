@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  form = document.querySelector('#create-task-form')
+  const form = document.querySelector('#create-task-form')
   form.addEventListener('submit', function(e) {
     let newTaskField = document.getElementById('new-task-description')
     let newTask = newTaskField.value;
@@ -17,12 +17,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 
+const editButtonText = 'Edit'
+const deleteButtonText = 'Delete'
+
 let buildLi = (newTask) => {
   let liItem = document.createElement('li');
   liItem.className = newTask.split(' ').join('-');
   liItem.innerHTML = newTask;
-  liItem.appendChild(buttonGenerator(newTask, 'edit')); 
-  liItem.appendChild(buttonGenerator(newTask, 'delete'));
+  liItem.appendChild(buttonGenerator(newTask, editButtonText)); 
+  liItem.appendChild(buttonGenerator(newTask, deleteButtonText));
   return liItem;
 }
 
@@ -36,7 +39,7 @@ let buildEditForm = (itemClass) => {
   let textInput = document.createElement('input');
   textInput.type = 'text'; 
   
-  textInput.value = lineItem.innerText.split('edit')[0]; 
+  textInput.value = lineItem.innerText.split(editButtonText)[0]; 
   
   editForm.appendChild(textInput); 
   editForm.appendChild(generateUpdateButton());
@@ -68,9 +71,9 @@ let deleteListItem = (itemClass) => {
 }
 
 let buttonEventCallback = (e) => {
-  if (e.srcElement.textContent === 'edit') {
+  if (e.currentTarget.className.includes(editButtonText)) {
     buildEditForm(e.currentTarget.parentNode.className);
-  } else if (e.srcElement.textContent === 'delete') {
+  } else if (e.currentTarget.className.includes(deleteButtonText)) {
     deleteListItem(e.currentTarget.parentNode.className);
   }
 }
